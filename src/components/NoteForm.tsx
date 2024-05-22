@@ -1,7 +1,11 @@
 import CreatableReactSelect from "react-select/creatable";
 import { Link } from "react-router-dom";
+import { useRef } from "react";
 
 export function NoteForm() {
+  const titleRef = useRef<HTMLInputElement>(null);
+  const markdownRef = useRef<HTMLTextAreaElement>(null);
+
   return (
     <>
       <form className="flex flex-col flex-wrap w-5/6 gap-4">
@@ -11,6 +15,7 @@ export function NoteForm() {
             <input
               type="text"
               id="title"
+              ref={titleRef}
               className="w-full px-2 py-1 font-bold text-gray-900 rounded-sm outline outline-2 outline-violet-600 bg-zinc-100"
               required
             />
@@ -34,11 +39,13 @@ export function NoteForm() {
           <label htmlFor="title">Body</label>
           <textarea
             id="body"
+            ref={markdownRef}
             className="w-full h-full px-2 py-1 text-gray-900 rounded-sm outline outline-2 outline-violet-600 bg-zinc-100"
             rows={15}
             required
           ></textarea>
         </div>
+
         <div className="flex justify-between my-4">
           <button
             type="submit"
