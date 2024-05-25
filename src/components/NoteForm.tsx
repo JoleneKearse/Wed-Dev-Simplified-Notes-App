@@ -1,14 +1,36 @@
 import CreatableReactSelect from "react-select/creatable";
 import { Link } from "react-router-dom";
-import { useRef } from "react";
+import { FormEvent, useRef, useState } from "react";
+import { v4 as uuidV4 } from "uuid";
 
-export function NoteForm() {
+import { NoteData, Tag } from "../App";
+
+type NoteFormProps = {
+  onSubmit: (data: NoteData) => void;
+  onAddTag: (tag: Tag) => void;
+  availableTags: Tag[];
+};
+
+export function NoteForm({ onSubmit, onAddTag, availableTags }: NoteFormProps) {
   const titleRef = useRef<HTMLInputElement>(null);
   const markdownRef = useRef<HTMLTextAreaElement>(null);
+  const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    onSubmit({
+      title: titleRef.current!.value,
+      markdown: markdownRef.current!.value,
+      tags: selectedTags,
+    });
+  };
 
   return (
     <>
-      <form className="flex flex-col flex-wrap w-5/6 gap-4">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col flex-wrap w-5/6 gap-4"
+      >
         <div className="flex flex-col w-full gap-4">
           <div className="flex items-center gap-4">
             <label htmlFor="title">Title</label>
@@ -23,8 +45,35 @@ export function NoteForm() {
           <div className="flex items-center gap-4">
             <label htmlFor="tags">Tags</label>
             <CreatableReactSelect
+              options={availableTags.map((tag) => {
+                return {
+                  value: tag.id,
+                  label: tag.label,
+                };
+              })}
+              onCreateOption={(label) => {
+                const newTag = { id: uuidV4(), label };
+                onAddTag(newTag);
+                setSelectedTags((prev) => [...prev, newTag]);
+              }}
               isMulti
               className="w-full"
+              value={selectedTags.map((tag) => {
+                return {
+                  value: tag.id,
+                  label: tag.label,
+                };
+              })}
+              onChange={(tags) => {
+                setSelectedTags(
+                  tags.map((tag) => {
+                    return {
+                      id: tag.value,
+                      label: tag.label,
+                    };
+                  })
+                );
+              }}
               styles={{
                 control: (baseStyles) => ({
                   ...baseStyles,
@@ -46,7 +95,7 @@ export function NoteForm() {
           ></textarea>
         </div>
 
-        <div className="flex justify-between my-4">
+        <div className="flex justify-end gap-4 my-4">
           <button
             type="submit"
             className="px-2 py-1 rounded-md bg-violet-500 hover:bg-violet-800 focus:bg-violet-800"
