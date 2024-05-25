@@ -1,5 +1,5 @@
 import CreatableReactSelect from "react-select/creatable";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FormEvent, useRef, useState } from "react";
 import { v4 as uuidV4 } from "uuid";
 
@@ -15,7 +15,7 @@ export function NoteForm({ onSubmit, onAddTag, availableTags }: NoteFormProps) {
   const titleRef = useRef<HTMLInputElement>(null);
   const markdownRef = useRef<HTMLTextAreaElement>(null);
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
-  const 
+  const navigate = useNavigate();
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -24,6 +24,8 @@ export function NoteForm({ onSubmit, onAddTag, availableTags }: NoteFormProps) {
       markdown: markdownRef.current!.value,
       tags: selectedTags,
     });
+    // move to previous page
+    navigate("..");
   };
 
   return (
@@ -58,7 +60,7 @@ export function NoteForm({ onSubmit, onAddTag, availableTags }: NoteFormProps) {
                 setSelectedTags((prev) => [...prev, newTag]);
               }}
               isMulti
-              className="w-full"
+              className="w-full text-gray-500"
               value={selectedTags.map((tag) => {
                 return {
                   value: tag.id,

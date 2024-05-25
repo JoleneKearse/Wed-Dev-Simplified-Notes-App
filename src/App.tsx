@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { v4 as uuidV4 } from "uuid";
 
 import { NewNote } from "./components/NewNote";
+import { NoteList } from "./components/NoteList";
 
 export type Note = {
   id: string;
@@ -44,7 +45,7 @@ function App() {
     });
   }, [notes, tags]);
 
-  const onCreateNote = (data: NoteData) => {
+  const onCreateNote = ({ tags, ...data}: NoteData) => {
     setNotes((prevNotes) => {
       return [
         ...prevNotes,
@@ -60,7 +61,12 @@ function App() {
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
       <Routes>
-        <Route path="/" element={<h1 className="text-3xl">Home</h1>}></Route>
+        <Route 
+          path="/" 
+          element={<NoteList 
+            availableTags={tags}
+          />}
+        ></Route>
         <Route
           path="/new"
           element={
