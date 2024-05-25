@@ -34,6 +34,7 @@ function App() {
   const [notes, setNotes] = useLocalStorage<RawNote[]>("NOTES", []);
   const [tags, setTags] = useLocalStorage<Tag[]>("TAGS", []);
 
+  // convert RawNote to Note
   const notesWithTags = useMemo(() => {
     return notes.map((note) => {
       return {
@@ -45,19 +46,31 @@ function App() {
 
   const onCreateNote = (data: NoteData) => {
     setNotes((prevNotes) => {
-      return [...prevNotes, { ...data, id: uuidV4(), tagIds: tags.map(tag => tag.id) }];
+      return [
+        ...prevNotes,
+        { ...data, id: uuidV4(), tagIds: tags.map((tag) => tag.id) },
+      ];
     });
   };
 
   const addTag = (tag: Tag) => {
-    setTags(prev => [...prev, tag])
-  }
+    setTags((prev) => [...prev, tag]);
+  };
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
       <Routes>
         <Route path="/" element={<h1 className="text-3xl">Home</h1>}></Route>
-        <Route path="/new" element={<NewNote onSubmit={onCreateNote} onAddTag={addTag} availableTags={tags} />}></Route>
+        <Route
+          path="/new"
+          element={
+            <NewNote
+              onSubmit={onCreateNote}
+              onAddTag={addTag}
+              availableTags={tags}
+            />
+          }
+        ></Route>
         <Route path="/:id">
           <Route index element={<h1 className="text-3xl">Show</h1>} />
           <Route path="edit" element={<h1 className="text-3xl">Edit</h1>} />
