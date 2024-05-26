@@ -1,11 +1,13 @@
 import { useNote } from "./NoteLayout";
 import { Link } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
 
 export function Note() {
   const note = useNote();
 
   return (
-    <article className="flex flex-col gap-4 py-4">
+    <>
+    <section className="flex flex-col gap-4 py-4">
       <div className="flex flex-col gap-2">
         <h1 className="text-3xl font-bold">{note.title}</h1>
         {note.tags.length > 0 && (
@@ -21,6 +23,7 @@ export function Note() {
           </div>
         )}
       </div>
+      
       <div className="flex justify-end gap-4 my-4">
         <Link to={`/${note.id}/edit`}>
           <button
@@ -45,6 +48,8 @@ export function Note() {
           </button>
         </Link>
       </div>
-    </article>
+    </section>
+    <ReactMarkdown>{note.markdown}</ReactMarkdown>
+    </>
   );
 }
