@@ -49,7 +49,11 @@ export function Note() {
         </Link>
       </div>
     </section>
-    <ReactMarkdown>{note.markdown}</ReactMarkdown>
+    <ReactMarkdown
+      className="w-5/6 py-4 max-w-prose"
+    >
+      {note.markdown}
+    </ReactMarkdown>
     </>
   );
 }
