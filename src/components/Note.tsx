@@ -36,12 +36,14 @@ export function Note() {
         >
           Delete
         </button>
-        <button
-          type="button"
-          className="px-2 py-1 text-gray-800 bg-gray-300 rounded-md hover:bg-violet-800 focus:bg-violet-800 hover:text-zinc-200 focus:text-zinc-200"
-        >
-          Back
-        </button>
+        <Link to="/">
+          <button
+            type="button"
+            className="px-2 py-1 text-gray-800 bg-gray-300 rounded-md hover:bg-violet-800 focus:bg-violet-800 hover:text-zinc-200 focus:text-zinc-200"
+          >
+            Back
+          </button>
+        </Link>
       </div>
     </article>
   );
