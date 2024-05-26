@@ -1,16 +1,36 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import ReactSelect from "react-select";
 
 import { Tag } from "../App";
 
-type NoteListProps = {
-  availableTags: Tag[];
+type SimplifiedNote = {
+  id: string;
+  title: string;
+  tags: Tag[];
 };
 
-export function NoteList({ availableTags }: NoteListProps) {
+type NoteListProps = {
+  availableTags: Tag[];
+  notes: SimplifiedNote[];
+};
+
+export function NoteList({ availableTags, notes }: NoteListProps) {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [title, setTitle] = useState<string>("");
+
+  const filteredNotes = useMemo(() => {
+    return notes.filter((note) => {
+      return (
+        (title === "" ||
+          note.title.toLowerCase().includes(title.toLowerCase())) &&
+        (selectedTags.length === 0 ||
+          selectedTags.every((tag) =>
+            note.tags.some((noteTag) => noteTag.id === tag.id)
+          ))
+      );
+    });
+  }, [title, selectedTags, notes]);
 
   return (
     <>
@@ -72,11 +92,29 @@ export function NoteList({ availableTags }: NoteListProps) {
         </div>
       </form>
 
-      <main>
-        {/* {filteredNotes.map(note => {
-          
-        })} */}
+      <main className="flex flex-wrap w-5/6 gap-3 py-8 md:gap-8">
+        {filteredNotes.map((note) => (
+          <NoteCard id={note.id} title={note.title} tags={note.tags} />
+        ))}
       </main>
     </>
+  );
+}
+
+function NoteCard({ id, title, tags }: SimplifiedNote) {
+  return (
+    <Link 
+      to={`/${id}`}
+      className="flex flex-col items-center justify-center gap-2 p-4 rounded-md outline outline-dotted hover:scale-105 hover:outline-violet-300 hover:outline-4 focus:scale-105 focus:outline-violet-300 focus:outline-4"
+    >
+      <h2 className="text-2xl truncate">{title}</h2>
+      {tags.length > 0 && (
+        <div className="flex items-center justify-center gap-2">
+          {tags.map(tag => (
+            <span className="px-2 py-1 rounded-md bg-violet-500" key={tag.id}>{tag.label}</span>
+          ))}
+        </div>
+      )}
+    </Link>
   );
 }
