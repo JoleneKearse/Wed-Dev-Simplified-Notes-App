@@ -34,9 +34,9 @@ export function NoteList({ availableTags, notes }: NoteListProps) {
 
   return (
     <>
-      <section className="flex flex-col flex-wrap w-5/6 gap-4 my-4">
+      <section className="flex flex-col flex-wrap w-5/6 gap-4 my-4 max-w-prose">
         <div className="flex justify-between">
-          <h1 className="text-3xl font-bold">Notes</h1>
+          <h1 className="text-3xl font-bold text-transparent bg-gradient-to-br from-violet-600 via-violet-400 to-violet-300 bg-clip-text">Notes</h1>
           <div className="flex items-center gap-2">
             <Link to="/new">
               <button className="px-2 py-1 rounded-md bg-violet-500 hover:bg-violet-800 focus:bg-violet-800">
@@ -50,7 +50,7 @@ export function NoteList({ availableTags, notes }: NoteListProps) {
         </div>
       </section>
 
-      <form className="flex flex-col flex-wrap w-5/6 gap-4 my-4 md:flex-row md:w-3/4 md:justify-between lg:w-3/5">
+      <form className="flex flex-col flex-wrap w-5/6 gap-4 my-4 max-w-prose md:flex-row md:w-3/4 md:justify-between lg:w-3/5">
         <div className="flex flex-col items-center justify-center gap-2">
           <label htmlFor="title">Title</label>
           <input
@@ -58,7 +58,7 @@ export function NoteList({ availableTags, notes }: NoteListProps) {
             id="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-2 py-2 font-bold text-gray-900 rounded-sm outline outline-2 outline-violet-600 bg-zinc-100 md:w-80"
+            className="w-full px-2 py-2 font-bold text-gray-900 rounded-sm outline outline-2 outline-violet-600 bg-zinc-100 md:w-64"
           />
         </div>
         <div className="flex flex-col items-center justify-center gap-2">
@@ -71,7 +71,7 @@ export function NoteList({ availableTags, notes }: NoteListProps) {
               };
             })}
             isMulti
-            className="w-full text-gray-500 md:w-80"
+            className="w-full text-gray-500 md:w-64"
             value={selectedTags.map((tag) => {
               return {
                 value: tag.id,
@@ -92,7 +92,7 @@ export function NoteList({ availableTags, notes }: NoteListProps) {
         </div>
       </form>
 
-      <main className="flex flex-wrap w-5/6 gap-3 py-8 md:gap-8">
+      <main className="flex flex-wrap w-5/6 gap-3 py-8 max-w-prose md:gap-8">
         {filteredNotes.map((note) => (
           <NoteCard id={note.id} title={note.title} tags={note.tags} />
         ))}

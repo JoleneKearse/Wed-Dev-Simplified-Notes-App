@@ -8,8 +8,8 @@ export function Note() {
   return (
     <>
       <section className="flex flex-col justify-between w-full gap-4 py-4 max-w-prose md:flex-row">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-3xl font-bold text-center text-transparent bg-gradient-to-br from-violet-600 via-violet-400 to-violet-300 bg-clip-text">{note.title}</h1>
+        <div className="flex flex-col items-center gap-2">
+          <h1 className="max-w-xs text-3xl font-bold text-center text-transparent truncate bg-gradient-to-br from-violet-600 via-violet-400 to-violet-300 bg-clip-text min-h-10">{note.title}</h1>
           {note.tags.length > 0 && (
             <div className="flex items-center justify-center gap-2">
               {note.tags.map((tag) => (
