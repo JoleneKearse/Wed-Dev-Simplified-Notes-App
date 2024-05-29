@@ -15,9 +15,16 @@ type NoteListProps = {
   notes: SimplifiedNote[];
 };
 
+type EditTagsModalProps = {
+  isEditTagsModalOpen: boolean;
+  availableTags: Tag[];
+  handleClose: () => void;
+};
+
 export function NoteList({ availableTags, notes }: NoteListProps) {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [title, setTitle] = useState<string>("");
+  const [isEditTagsModalOpen, setIsEditTagsModalOpen] = useState(false);
 
   const filteredNotes = useMemo(() => {
     return notes.filter((note) => {
@@ -36,14 +43,20 @@ export function NoteList({ availableTags, notes }: NoteListProps) {
     <>
       <section className="flex flex-col flex-wrap w-5/6 gap-4 my-4 max-w-prose">
         <div className="flex justify-between">
-          <h1 className="text-3xl font-bold text-transparent bg-gradient-to-br from-violet-600 via-violet-400 to-violet-300 bg-clip-text">Notes</h1>
+          <h1 className="text-3xl font-bold text-transparent bg-gradient-to-br from-violet-600 via-violet-400 to-violet-300 bg-clip-text">
+            Notes
+          </h1>
+
           <div className="flex items-center gap-2">
             <Link to="/new">
               <button className="px-2 py-1 rounded-md bg-violet-500 hover:bg-violet-800 focus:bg-violet-800">
                 Create
               </button>
             </Link>
-            <button className="px-2 py-1 bg-gray-500 rounded-md hover:bg-gray-700 focus:bg-gray-700">
+            <button
+              className="px-2 py-1 bg-gray-500 rounded-md hover:bg-gray-700 focus:bg-gray-700"
+              onClick={() => setIsEditTagsModalOpen(true)}
+            >
               Edit Tags
             </button>
           </div>
@@ -97,24 +110,80 @@ export function NoteList({ availableTags, notes }: NoteListProps) {
           <NoteCard id={note.id} title={note.title} tags={note.tags} />
         ))}
       </main>
+
+      {/* Edit Tags modals */}
+      <EditTagsModal
+        isEditTagsModalOpen={isEditTagsModalOpen}
+        availableTags={availableTags}
+        handleClose={() => setIsEditTagsModalOpen(false)}
+      />
     </>
   );
 }
 
 function NoteCard({ id, title, tags }: SimplifiedNote) {
   return (
-    <Link 
+    <Link
       to={`/${id}`}
       className="flex flex-col items-center justify-center gap-2 p-4 rounded-md outline outline-dotted hover:scale-105 hover:outline-violet-300 hover:outline-4 focus:scale-105 focus:outline-violet-300 focus:outline-4"
     >
       <h2 className="text-2xl truncate">{title}</h2>
       {tags.length > 0 && (
         <div className="flex items-center justify-center gap-2">
-          {tags.map(tag => (
-            <span className="px-2 py-1 rounded-md bg-violet-500" key={tag.id}>{tag.label}</span>
+          {tags.map((tag) => (
+            <span className="px-2 py-1 rounded-md bg-violet-500" key={tag.id}>
+              {tag.label}
+            </span>
           ))}
         </div>
       )}
     </Link>
+  );
+}
+
+function EditTagsModal({
+  isEditTagsModalOpen,
+  availableTags,
+  handleClose,
+}: EditTagsModalProps) {
+  if (!isEditTagsModalOpen) return null;
+  return (
+    <div className="fixed inset-0 flex items-center justify-center">
+      <div
+        className="fixed inset-0 bg-black opacity-80"
+        onClick={handleClose}
+      ></div>
+      <div className="z-10 p-4 rounded-lg shadow-lg bg-violet-900">
+        <div className="flex items-start justify-between">
+          <h2 className="pb-4 text-2xl font-semibold text-gray-200">Edit Tags</h2>
+          <button
+            onClick={handleClose}
+            className="text-xl text-gray-200 hover:text-gray-100 hover:scale-110"
+          >
+            ✘
+          </button>
+        </div>
+        <form>
+          <div className="space-y-4">
+            {availableTags.map((tag) => (
+              <div key={tag.id} className="flex items-center">
+                <input
+                  type="text"
+                  value={tag.label}
+                  className="flex-1 p-2 text-xl font-semibold text-gray-900 border rounded bg-violet-300"
+                />
+                <button
+                  type="button"
+                  className="ml-2 text-violet-400 hover:text-red-800"
+                  onClick={() => handleClose(tag.id)}
+                >
+                  ✘
+                </button>
+              </div>
+            ))}
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }
