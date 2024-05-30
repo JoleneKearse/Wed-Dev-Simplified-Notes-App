@@ -13,15 +13,24 @@ type SimplifiedNote = {
 type NoteListProps = {
   availableTags: Tag[];
   notes: SimplifiedNote[];
+  updateTag: (id: string, label: string) => void;
+  deleteTag: (id: string) => void;
 };
 
 type EditTagsModalProps = {
   isEditTagsModalOpen: boolean;
   availableTags: Tag[];
   handleClose: () => void;
+  updateTag: (id: string, label: string) => void;
+  deleteTag: (id: string) => void;
 };
 
-export function NoteList({ availableTags, notes }: NoteListProps) {
+export function NoteList({
+  availableTags,
+  notes,
+  updateTag,
+  deleteTag,
+}: NoteListProps) {
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [title, setTitle] = useState<string>("");
   const [isEditTagsModalOpen, setIsEditTagsModalOpen] = useState(false);
@@ -107,7 +116,12 @@ export function NoteList({ availableTags, notes }: NoteListProps) {
 
       <main className="flex flex-wrap w-5/6 gap-3 py-8 max-w-prose md:gap-8">
         {filteredNotes.map((note) => (
-          <NoteCard id={note.id} title={note.title} tags={note.tags} />
+          <NoteCard
+            id={note.id}
+            key={note.id}
+            title={note.title}
+            tags={note.tags}
+          />
         ))}
       </main>
 
@@ -116,6 +130,8 @@ export function NoteList({ availableTags, notes }: NoteListProps) {
         isEditTagsModalOpen={isEditTagsModalOpen}
         availableTags={availableTags}
         handleClose={() => setIsEditTagsModalOpen(false)}
+        updateTag={updateTag}
+        deleteTag={deleteTag}
       />
     </>
   );
@@ -145,6 +161,8 @@ function EditTagsModal({
   isEditTagsModalOpen,
   availableTags,
   handleClose,
+  updateTag,
+  deleteTag,
 }: EditTagsModalProps) {
   if (!isEditTagsModalOpen) return null;
   return (
@@ -155,7 +173,9 @@ function EditTagsModal({
       ></div>
       <div className="z-10 p-4 rounded-lg shadow-lg bg-violet-900">
         <div className="flex items-start justify-between">
-          <h2 className="pb-4 text-2xl font-semibold text-gray-200">Edit Tags</h2>
+          <h2 className="pb-4 text-2xl font-semibold text-gray-200">
+            Edit Tags
+          </h2>
           <button
             onClick={handleClose}
             className="text-xl text-gray-200 hover:text-gray-100 hover:scale-110"
@@ -171,11 +191,12 @@ function EditTagsModal({
                   type="text"
                   value={tag.label}
                   className="flex-1 p-2 text-xl font-semibold text-gray-900 border rounded bg-violet-300"
+                  onChange={(e) => updateTag(tag.id, e.target.value)}
                 />
                 <button
                   type="button"
                   className="ml-2 text-violet-400 hover:text-red-800"
-                  onClick={() => handleClose(tag.id)}
+                  onClick={() => deleteTag(tag.id)}
                 >
                   ✘
                 </button>

@@ -79,12 +79,37 @@ function App() {
     setTags((prev) => [...prev, tag]);
   };
 
+  const updateTag = (id: string, label: string) => {
+    setTags((prev) => {
+      return prev.map((tag) => {
+        if (tag.id === id) {
+          return { ...tag, label };
+        } else {
+          return tag;
+        }
+      });
+    });
+  };
+
+  const deleteTag = (id: string) => {
+    setTags((prev) => {
+      return prev.filter((tag) => tag.id !== id);
+    });
+  };
+
   return (
     <div className="flex flex-col items-center justify-center w-full h-full">
       <Routes>
         <Route
           path="/"
-          element={<NoteList availableTags={tags} notes={notesWithTags} />}
+          element={
+            <NoteList
+              availableTags={tags}
+              notes={notesWithTags}
+              updateTag={updateTag}
+              deleteTag={deleteTag}
+            />
+          }
         ></Route>
         <Route
           path="/new"
