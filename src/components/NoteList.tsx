@@ -1,6 +1,7 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, FormEvent } from "react";
 import { Link } from "react-router-dom";
 import ReactSelect from "react-select";
+import { v4 as uuidV4 } from "uuid";
 
 import { Tag } from "../App";
 
@@ -13,6 +14,7 @@ type SimplifiedNote = {
 type NoteListProps = {
   availableTags: Tag[];
   notes: SimplifiedNote[];
+  addTag: (tag: Tag) => void;
   updateTag: (id: string, label: string) => void;
   deleteTag: (id: string) => void;
 };
@@ -21,6 +23,7 @@ type EditTagsModalProps = {
   isEditTagsModalOpen: boolean;
   availableTags: Tag[];
   handleClose: () => void;
+  addTag: (tag: Tag) => void;
   updateTag: (id: string, label: string) => void;
   deleteTag: (id: string) => void;
 };
@@ -28,6 +31,7 @@ type EditTagsModalProps = {
 export function NoteList({
   availableTags,
   notes,
+  addTag,
   updateTag,
   deleteTag,
 }: NoteListProps) {
@@ -130,6 +134,7 @@ export function NoteList({
         isEditTagsModalOpen={isEditTagsModalOpen}
         availableTags={availableTags}
         handleClose={() => setIsEditTagsModalOpen(false)}
+        addTag={addTag}
         updateTag={updateTag}
         deleteTag={deleteTag}
       />
@@ -161,9 +166,21 @@ function EditTagsModal({
   isEditTagsModalOpen,
   availableTags,
   handleClose,
+  addTag,
   updateTag,
   deleteTag,
 }: EditTagsModalProps) {
+  const newTagRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (newTagRef.current) {
+      const newTag = { id: uuidV4(), label: newTagRef.current.value };
+      addTag(newTag);
+      newTagRef.current.value = "";
+    }
+  };
+
   if (!isEditTagsModalOpen) return null;
   return (
     <div className="fixed inset-0 flex items-center justify-center">
@@ -183,25 +200,42 @@ function EditTagsModal({
             ✘
           </button>
         </div>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="space-y-4">
-            {availableTags.map((tag) => (
-              <div key={tag.id} className="flex items-center">
+            {availableTags.length > 0 ? (
+              availableTags.map((tag) => (
+                <div key={tag.id} className="flex items-center">
+                  <input
+                    type="text"
+                    value={tag.label}
+                    className="flex-1 p-2 text-xl font-semibold text-gray-900 border rounded bg-violet-300"
+                    onChange={(e) => updateTag(tag.id, e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    className="ml-2 text-violet-400 hover:text-red-800"
+                    onClick={() => deleteTag(tag.id)}
+                  >
+                    ✘
+                  </button>
+                </div>
+              ))
+            ) : (
+              <div className="flex items-center">
                 <input
                   type="text"
-                  value={tag.label}
+                  placeholder="Add a new tag"
                   className="flex-1 p-2 text-xl font-semibold text-gray-900 border rounded bg-violet-300"
-                  onChange={(e) => updateTag(tag.id, e.target.value)}
+                  ref={newTagRef}
                 />
                 <button
-                  type="button"
+                  type="submit"
                   className="ml-2 text-violet-400 hover:text-red-800"
-                  onClick={() => deleteTag(tag.id)}
                 >
-                  ✘
+                  ➕
                 </button>
               </div>
-            ))}
+            )}
           </div>
         </form>
       </div>

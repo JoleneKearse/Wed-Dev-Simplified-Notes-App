@@ -106,6 +106,7 @@ function App() {
             <NoteList
               availableTags={tags}
               notes={notesWithTags}
+              addTag={addTag}
               updateTag={updateTag}
               deleteTag={deleteTag}
             />
