@@ -118,6 +118,14 @@ export function NoteList({
         </div>
       </form>
 
+      {notes.length === 0 && (
+        <img 
+          src="/note.svg" 
+          alt="Note asking you to add notes" 
+          className="w-5/6 pt-14 md:w-1/2 md:pt-2 lg:w-2/5"
+        />
+      )}
+
       <main className="flex flex-wrap w-5/6 gap-3 py-8 max-w-prose md:gap-8">
         {filteredNotes.map((note) => (
           <NoteCard
