@@ -1,6 +1,8 @@
 import { useNote } from "./NoteLayout";
 import { Link, useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import "../styles/markdown.css";
 
 type NoteProps = {
   onDelete: (id: string) => void;
@@ -14,7 +16,9 @@ export function Note({ onDelete }: NoteProps) {
     <>
       <section className="flex flex-col justify-between w-full gap-4 py-4 max-w-prose md:flex-row">
         <div className="flex flex-col items-center gap-2">
-          <h1 className="max-w-xs text-3xl font-bold text-center text-transparent truncate bg-gradient-to-br from-violet-600 via-violet-400 to-violet-300 bg-clip-text min-h-10">{note.title}</h1>
+          <h1 className="max-w-xs text-3xl font-bold text-center text-transparent truncate bg-gradient-to-br from-violet-600 via-violet-400 to-violet-300 bg-clip-text min-h-10">
+            {note.title}
+          </h1>
           {note.tags.length > 0 && (
             <div className="flex items-center justify-center gap-2">
               {note.tags.map((tag) => (
@@ -42,8 +46,8 @@ export function Note({ onDelete }: NoteProps) {
             type="button"
             className="px-2 py-1 text-purple-700 bg-gray-300 rounded-md hover:bg-violet-800 focus:bg-violet-800 hover:text-zinc-200 focus:text-zinc-200"
             onClick={() => {
-              onDelete(note.id)
-              navigate("/")
+              onDelete(note.id);
+              navigate("/");
             }}
           >
             Delete
@@ -58,7 +62,11 @@ export function Note({ onDelete }: NoteProps) {
           </Link>
         </div>
       </section>
-      <ReactMarkdown className="w-5/6 py-4 max-w-prose">
+
+      <ReactMarkdown
+        className="w-5/6 py-4 max-w-prose markdown-body"
+        remarkPlugins={[remarkGfm]}
+      >
         {note.markdown}
       </ReactMarkdown>
     </>

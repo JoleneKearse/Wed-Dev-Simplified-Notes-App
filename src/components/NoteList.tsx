@@ -122,7 +122,7 @@ export function NoteList({
         <img 
           src="/note.svg" 
           alt="Note asking you to add notes" 
-          className="w-5/6 pt-14 md:w-1/2 md:pt-2 lg:w-2/5"
+          className="w-5/6 pt-14z1 md:w-1/2 md:pt-2 lg:w-2/5"
         />
       )}
 
