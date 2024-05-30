@@ -48,7 +48,7 @@ export function NoteForm({
               type="text"
               id="title"
               ref={titleRef}
-              className="w-full px-2 py-1 font-bold text-gray-900 rounded-sm outline outline-2 outline-violet-600 bg-zinc-100"
+              className="w-full px-2 py-1 font-bold text-gray-900 rounded-sm outline outline-2 outline-violet-600 bg-zinc-100 opacity-95"
               required
               defaultValue={title}
             />
@@ -100,7 +100,7 @@ export function NoteForm({
           <textarea
             id="body"
             ref={markdownRef}
-            className="w-full h-full px-2 py-1 text-gray-900 rounded-sm outline outline-2 outline-violet-600 bg-zinc-100"
+            className="w-full h-full px-2 py-1 text-gray-900 rounded-sm opacity-90 outline outline-2 outline-violet-600 bg-zinc-100"
             rows={15}
             required
             defaultValue={markdown}
