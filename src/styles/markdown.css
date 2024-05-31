@@ -36,10 +36,6 @@
   @apply underline text-emerald-600;
 }
 
-.markdown-body {
-  @apply prose;
-}
-
 .markdown-body ol {
   @apply pl-5 mb-4 list-decimal;
 }
