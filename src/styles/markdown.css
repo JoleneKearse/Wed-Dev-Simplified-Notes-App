@@ -1,26 +1,26 @@
 /* Tailwind CSS utilities for markdown content */
 .markdown-body h1 {
-  @apply text-4xl font-bold;
+  @apply mb-2 text-4xl font-bold;
 }
 
 .markdown-body h2 {
-  @apply text-3xl font-bold;
+  @apply mb-2 text-3xl font-bold;
 }
 
 .markdown-body h3 {
-  @apply text-2xl font-bold;
+  @apply mb-2 text-2xl font-bold;
 }
 
 .markdown-body h4 {
-  @apply text-xl font-bold;
+  @apply mb-2 text-xl font-bold;
 }
 
 .markdown-body h5 {
-  @apply text-lg font-bold;
+  @apply mb-2 text-lg font-bold;
 }
 
 .markdown-body h6 {
-  @apply text-base font-bold;
+  @apply mb-2 text-base font-bold;
 }
 
 .markdown-body p {
