@@ -76,7 +76,16 @@ export function NoteList({
         </div>
       </section>
 
-      <form className="flex flex-col flex-wrap w-5/6 gap-4 my-4 max-w-prose md:flex-row md:w-3/4 md:justify-between lg:w-3/5">
+      
+
+      {notes.length === 0 ? (
+        <img 
+          src="/note.svg" 
+          alt="Note asking you to add notes" 
+          className="w-5/6 pt-14z1 md:w-1/2 md:pt-2 lg:w-2/5"
+        />
+      ) : (
+        <form className="flex flex-col flex-wrap w-5/6 gap-4 my-4 max-w-prose md:flex-row md:w-3/4 md:justify-between lg:w-3/5">
         <div className="flex flex-col items-center justify-center gap-2">
           <label htmlFor="title">Title</label>
           <input
@@ -117,13 +126,6 @@ export function NoteList({
           />
         </div>
       </form>
-
-      {notes.length === 0 && (
-        <img 
-          src="/note.svg" 
-          alt="Note asking you to add notes" 
-          className="w-5/6 pt-14z1 md:w-1/2 md:pt-2 lg:w-2/5"
-        />
       )}
 
       <div className="flex flex-wrap w-5/6 gap-3 py-8 max-w-prose md:gap-8">
