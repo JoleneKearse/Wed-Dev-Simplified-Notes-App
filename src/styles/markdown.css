@@ -1,4 +1,8 @@
 /* Tailwind CSS utilities for markdown content */
+.no-tailwind {
+  all: unset !important;
+}
+
 .markdown-body h1 {
   @apply mb-6 text-4xl font-bold;
 }
@@ -46,4 +50,8 @@
 
 .markdown-body ol li {
   @apply mb-1;
+}
+
+.markdown-body .inline-code {
+  @apply px-2 py-1 rounded bg-violet-700;
 }

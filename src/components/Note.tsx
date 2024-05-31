@@ -2,6 +2,10 @@ import { useNote } from "./NoteLayout";
 import { Link, useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { Components } from "react-markdown";
+
+
+
 import "../styles/markdown.css";
 
 type NoteProps = {
@@ -11,6 +15,20 @@ type NoteProps = {
 export function Note({ onDelete }: NoteProps) {
   const note = useNote();
   const navigate = useNavigate();
+
+  const MarkdownComponents: Components = {
+    code({ inline, className, children, ...props }) {
+      return inline ? (
+        <span className={className} {...props}>
+          {children}
+        </span>
+      ) : (
+        <code className="inline-code" {...props}>
+          {children}
+        </code>
+      );
+    }
+  };
 
   return (
     <>
@@ -63,12 +81,15 @@ export function Note({ onDelete }: NoteProps) {
         </div>
       </section>
 
-      <ReactMarkdown
-        className="w-5/6 py-4 max-w-prose markdown-body"
-        remarkPlugins={[remarkGfm]}
-      >
-        {note.markdown}
-      </ReactMarkdown>
+      <div className="w-5/6 py-4 max-w-prose remove-all">
+        <ReactMarkdown
+          className="no-tailwind markdown-body"
+          remarkPlugins={[remarkGfm]}
+          components={MarkdownComponents}
+        >
+          {note.markdown}
+        </ReactMarkdown>
+      </div>
     </>
   );
 }
