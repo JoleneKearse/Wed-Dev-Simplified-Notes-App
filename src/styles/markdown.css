@@ -32,6 +32,10 @@
   @apply pl-5 mb-4 list-disc list-inside;
 }
 
+.markdown-body li::marker {
+  @apply text-violet-400
+}
+
 .markdown-body a {
   @apply underline text-emerald-600;
 }
