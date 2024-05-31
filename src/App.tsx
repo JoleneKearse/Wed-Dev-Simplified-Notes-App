@@ -98,7 +98,7 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center w-full h-full">
+    <main className="flex flex-col items-center justify-center w-full h-full">
       <Routes>
         <Route
           path="/"
@@ -137,7 +137,7 @@ function App() {
         </Route>
         <Route path="*" element={<Navigate to="/" replace />}></Route>
       </Routes>
-    </div>
+    </main>
   );
 }
 

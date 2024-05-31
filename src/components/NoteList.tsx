@@ -126,7 +126,7 @@ export function NoteList({
         />
       )}
 
-      <main className="flex flex-wrap w-5/6 gap-3 py-8 max-w-prose md:gap-8">
+      <div className="flex flex-wrap w-5/6 gap-3 py-8 max-w-prose md:gap-8">
         {filteredNotes.map((note) => (
           <NoteCard
             id={note.id}
@@ -135,7 +135,7 @@ export function NoteList({
             tags={note.tags}
           />
         ))}
-      </main>
+      </div>
 
       {/* Edit Tags modals */}
       <EditTagsModal
